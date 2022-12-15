@@ -1,0 +1,135 @@
+@use "sass:math";
+
+// Подключение миксинов
+@import "base/mixins";
+
+// Подключение шрифтов
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap");
+
+// локальные файлы шрифтов
+@import "fonts/fonts";
+
+// Подключение иконочных шрифтов
+@import "fonts/icons";
+
+// Шрифт по умолчанию
+$fontFamily: "Montserrat";
+$fontSize: rem(18);
+
+// Основные цвета
+$mainColor: #000;
+$mainDarkColor: #141414;
+$mainOrange: #e8aa31;
+
+// ширина страницы
+$minWidth: 320;
+$maxWidth: 1920;
+$maxWidthContainer: 1590;
+$containerPadding: 30;
+
+// Тип адаптива:
+$responsiveType: 1;
+
+// Ширина страбатывания первого брейкпоинта
+$containerWidth: $maxWidthContainer + $containerPadding;
+
+// Брейк-поинты
+$pc: em($containerWidth);
+$tablet: em(991.98);
+$mobile: em(767.98);
+$mobileSmall: em(479.98);
+
+// Обнуление и общие параметры
+@import "base/null";
+
+body {
+	font-weight: 500;
+	.lock & {
+		overflow: hidden;
+		touch-action: none;
+	}
+}
+.wrapper {
+	min-height: 100%;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+	.loaded & {
+	}
+	> main {
+		flex: 1 1 auto;
+	}
+	> * {
+		min-width: 0;
+	}
+}
+
+@if ($responsiveType==1) {
+	[class*="__container"] {
+		@if ($maxWidthContainer>0) {
+			max-width: rem($containerWidth);
+			margin: 0 auto;
+		}
+		@if ($containerPadding>0) {
+			@if ($maxWidthContainer>0) {
+				padding: 0 rem(math.div($containerPadding, 2));
+			} @else {
+				@include adaptiveValue("padding-left", math.div($containerPadding, 2), 15);
+				@include adaptiveValue("padding-right", math.div($containerPadding, 2), 15);
+			}
+		}
+	}
+} @else {
+	[class*="__container"] {
+		margin: 0 auto;
+		@if ($maxWidthContainer>0) {
+			max-width: rem($containerWidth);
+		} @else {
+			@if ($containerPadding>0) {
+				padding: 0 rem(math.div($containerPadding, 2));
+			}
+		}
+		@media (max-width: $pc) {
+			max-width: rem(970);
+		}
+		@media (max-width: $tablet) {
+			max-width: rem(750);
+		}
+		@media (max-width: $mobile) {
+			max-width: none;
+			@if ($containerPadding>0 and $maxWidthContainer>0) {
+				padding: 0 rem(math.div($containerPadding, 2));
+			}
+		}
+	}
+}
+
+@import "base";
+
+@import "common";
+
+@import "header";
+@import "footer";
+
+@import "index";
+@import "catalog";
+@import "product";
+
+.page {
+	&__home {
+	}
+	&_inner {
+		padding-top: rem(30);
+	}
+	&__header {
+		margin-bottom: rem(30);
+	}
+	&__main-block {
+	}
+	&__catalog-cards {
+	}
+	&__articles-module {
+	}
+	&__products-block {
+	}
+}
